@@ -111,19 +111,30 @@ public class Controller implements Initializable {
                 break;
             case "=":
                 String displayText = displayCal.getText(); //get text from display
-                double result = calulate(displayText);
-                String resultForDisplay = Double.toString(result);
-                displayCal.setText(resultForDisplay);
-                String resultForDnevnikIzracunov = displayText+" = " + resultForDisplay;
-                if (!dnevnikIzracunov.getText().isEmpty())
-                    dnevnikIzracunov.setText(dnevnikIzracunov.getText() + "\n" + resultForDnevnikIzracunov);
-                else
-                    dnevnikIzracunov.setText(resultForDnevnikIzracunov);
+                //check if input is correct
+                char f = displayText.charAt(0);
+                char l = displayText.charAt(displayText.length()-1);
+                if (Character.isDigit(f) && Character.isDigit(l)) {
+                    double result = calulate(displayText);
+                    String resultForDisplay = Double.toString(result);
+                    displayCal.setText(resultForDisplay);
 
-                if (!dogodki.getText().isEmpty())
-                    dogodki.setText(dogodki.getText()+"\nRačunam: "+resultForDisplay);
-                else
-                    dogodki.setText("Računam: "+resultForDisplay);
+
+                    String resultForDnevnikIzracunov = displayText + " = " + resultForDisplay;
+                    if (!dnevnikIzracunov.getText().isEmpty())
+                        dnevnikIzracunov.setText(dnevnikIzracunov.getText() + "\n" + resultForDnevnikIzracunov);
+                    else
+                        dnevnikIzracunov.setText(resultForDnevnikIzracunov);
+
+                    if (!dogodki.getText().isEmpty())
+                        dogodki.setText(dogodki.getText() + "\nRačunam: " + resultForDisplay);
+                    else
+                        dogodki.setText("Računam: " + resultForDisplay);
+                }
+                else {
+                    status.setText("Error: Račun je v naroben formatu!");
+                }
+
 
                 break;
             default:
@@ -131,10 +142,25 @@ public class Controller implements Initializable {
 
         }
     }
+    private double fistMultiply(String first, String sec){
+        Double element1 = Double.parseDouble(first);
+        Double element2 = Double.parseDouble(sec);
+        return element1*element2;
+
+    }
 
 
     private double calulate(String getText){
         String elemetnsOfEquation [] = getText.split(" ");
+        /*double res;
+        for (int i = 0; i < elemetnsOfEquation.length; i++) {
+            if (elemetnsOfEquation[i].equals("*")){
+                res = fistMultiply(elemetnsOfEquation[i-1], elemetnsOfEquation[i+1]);
+            }
+            else if (elemetnsOfEquation[i].equals("/")){
+
+            }
+        }*/
         double result = Double.parseDouble(elemetnsOfEquation[0]);
         for (int i = 1; i < elemetnsOfEquation.length; i++) {
             switch (elemetnsOfEquation[i]){
